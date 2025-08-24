@@ -13,8 +13,8 @@ LOGO_IMAGE_BASE64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAA
 st.set_page_config(
     page_title="Bio Gemini",
     page_icon=LOGO_IMAGE_BASE64,
--   layout="wide", # Usar "wide" para que el título centrado tenga más espacio
-+    layout="centered",
+    layout="wide", # Usar "wide" para que el título centrado tenga más espacio
+    layout="centered",
     initial_sidebar_state="auto"
 )
 
