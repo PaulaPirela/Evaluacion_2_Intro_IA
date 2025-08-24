@@ -4,13 +4,61 @@ from langchain_groq import ChatGroq
 from langchain.prompts import ChatPromptTemplate
 from langchain.schema.output_parser import StrOutputParser
 
-# --- CONFIGURACIÓN DE LA PÁGINA (ESTILO GEMINI) ---
+# --- CONFIGURACIÓN DE LA PÁGINA ---
 st.set_page_config(
     page_title="Bio Agent",
     page_icon="🧬",
     layout="centered",
     initial_sidebar_state="auto"
 )
+
+# --- INYECCIÓN DE CSS PARA TEMA OSCURO (ESTILO GEMINI) ---
+st.markdown("""
+<style>
+/* Colores principales */
+body {
+    color: #fafafa;
+    background-color: #0e1117;
+}
+
+/* Color de fondo secundario (para la barra lateral y otros elementos) */
+.stApp {
+    background-color: #0e1117;
+}
+
+/* Estilo de los contenedores de chat */
+[data-testid="stChatMessage"] {
+    background-color: #262730;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* Color del texto del input de la API Key */
+[data-testid="stTextInput"] input {
+    color: #fafafa;
+}
+
+/* Estilo de los botones */
+.stButton>button {
+    border-color: #8884d8;
+    color: #8884d8;
+}
+
+.stButton>button:hover {
+    border-color: #fafafa;
+    color: #fafafa;
+    background-color: #8884d8;
+}
+
+/* Ocultar el menú principal y el pie de página de Streamlit */
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+header {visibility: hidden;}
+
+</style>
+""", unsafe_allow_html=True)
+
 
 # --- TÍTULO Y DESCRIPCIÓN ---
 st.title("🧬 Bio Agent")
@@ -28,24 +76,19 @@ Para comenzar, por favor ingresa tu API Key de Groq en la barra lateral.
 # --- BARRA LATERAL PARA LA API KEY ---
 with st.sidebar:
     st.header("🔑 Configuración")
-    # Usamos st.text_input con tipo 'password' para ocultar la clave
     groq_api_key = st.text_input("Ingresa tu API Key de Groq:", type="password", key="groq_api_key_input")
     
-    # Intenta cargar la clave desde los secretos de Streamlit si no se ingresa manualmente
     if not groq_api_key:
         try:
             groq_api_key = st.secrets["GROQ_API_KEY"]
         except (KeyError, FileNotFoundError):
-            groq_api_key = "" # Mantener vacío si no se encuentra en ningún lado
+            groq_api_key = ""
 
     st.markdown("---")
     st.info("Obtén tu API Key gratuita en [GroqCloud](https://console.groq.com/keys).")
     st.info("Tu clave no será almacenada, solo se usa para esta sesión.")
 
-
 # --- LÓGICA DEL AGENTE BIÓLOGO ---
-
-# 1. Plantilla del Prompt (Instrucciones para el LLM)
 prompt_template = ChatPromptTemplate.from_messages(
     [
         ("system", 
@@ -66,48 +109,9 @@ prompt_template = ChatPromptTemplate.from_messages(
     ]
 )
 
-# 2. Inicialización del Chatbot
 def get_chatbot_chain(api_key):
-    """Crea y devuelve la cadena de LangChain para el chatbot."""
     llm = ChatGroq(
         api_key=api_key,
         model="llama3-70b-8192"
     )
-    return prompt_template | llm | StrOutputParser()
-
-# --- INTERFAZ DE USUARIO PRINCIPAL ---
-
-# Verificación de la API Key
-if groq_api_key:
-    # Inicialización del historial de chat en el estado de la sesión
-    if "messages" not in st.session_state:
-        st.session_state.messages = [{"role": "assistant", "content": "Hola, ¿en qué puedo ayudarte hoy?"}]
-
-    # Mostrar mensajes previos
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
-
-    # Input del usuario
-    if prompt := st.chat_input("Pregúntame algo sobre biología..."):
-        # Añadir mensaje del usuario al historial y mostrarlo
-        st.session_state.messages.append({"role": "user", "content": prompt})
-        with st.chat_message("user"):
-            st.markdown(prompt)
-
-        # Generar y mostrar respuesta del asistente
-        with st.chat_message("assistant"):
-            with st.spinner("Pensando... 🧠"):
-                chain = get_chatbot_chain(groq_api_key)
-                try:
-                    response = chain.invoke({"user_question": prompt})
-                    st.markdown(response)
-                    # Añadir respuesta del asistente al historial
-                    st.session_state.messages.append({"role": "assistant", "content": response})
-                except Exception as e:
-                    st.error(f"Error al contactar el modelo: {e}")
-                    st.info("Verifica que tu API Key sea correcta y tenga saldo.")
-
-else:
-    st.warning("Por favor, ingresa tu API Key de Groq en la barra lateral para activar Bio Agent.")
-    st.info("La interfaz de chat aparecerá aquí una vez que la clave sea validada.")
+    return prompt_template |
