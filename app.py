@@ -46,17 +46,9 @@ body {
     display: none;
 }
 
-/* --- PANTALLA DE API KEY --- */
-.api-container {
-    background-color: var(--secondary-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 24px;
-    padding: 2rem 2.5rem;
-    max-width: 550px;
-    margin: 3rem auto;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
-}
-.api-container .stButton button {
+/* --- PANTALLA DE API KEY (SIN CONTENEDOR) --- */
+/* Se mantiene el estilo del botón y el input, pero ya no hay una tarjeta contenedora */
+.stButton button {
     background-color: var(--accent-green-dark);
     color: white;
     font-weight: 600;
@@ -66,11 +58,11 @@ body {
     width: 100%;
     transition: background-color 0.3s ease;
 }
-.api-container .stButton button:hover {
+.stButton button:hover {
     background-color: var(--accent-green);
     color: var(--primary-bg);
 }
-.api-container .stTextInput label {
+.stTextInput label {
     color: var(--text-primary) !important;
 }
 
@@ -95,22 +87,26 @@ body {
     font-weight: 600; color: var(--text-primary); padding-bottom: 8px;
 }
 
-/* <<--- CAMBIO DE COLOR PRINCIPAL AQUÍ --->> */
 [data-testid="stChatMessage"] > div[data-testid="stMarkdown"] {
     padding: 1.2em; border-radius: 12px; line-height: 1.6;
 }
 [data-testid="stChatMessage"][data-testid="chat-message-assistant"] > div[data-testid="stMarkdown"] {
     background-color: var(--secondary-bg);
     border: 1px solid var(--border-color);
-    color: var(--accent-green); /* Texto del asistente en verde */
+    color: var(--accent-green);
 }
 [data-testid="stChatMessage"][data-testid="chat-message-user"] > div[data-testid="stMarkdown"] {
     background-color: #2a2b32;
     border: 1px solid #4a4d52;
-    color: var(--accent-green); /* Texto del usuario en verde */
+    color: var(--accent-green);
 }
-
-/* Área de entrada de texto */
+pre {
+    background-color: #0d0d0d; border-radius: 8px; padding: 1em;
+    font-size: 0.9em; overflow-x: auto;
+}
+code {
+    color: #c9d1d9; font-family: 'Fira Code', 'Courier New', monospace;
+}
 [data-testid="stChatInput"] {
     position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
     background-color: rgba(30, 31, 32, 0.9); backdrop-filter: blur(10px);
@@ -120,8 +116,6 @@ body {
 [data-testid="stChatInput"] textarea {
     background: none; color: var(--text-primary);
 }
-
-/* Botones de sugerencia */
 .suggestion-buttons {
     display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 10px; max-width: 768px; margin: 1rem auto 2rem auto;
@@ -141,61 +135,4 @@ body {
 
 # --- LÓGICA DEL AGENTE (sin cambios) ---
 @st.cache_resource
-def get_chatbot_chain(_api_key):
-    prompt_template = ChatPromptTemplate.from_messages(
-        [
-            ("system", 
-             """Eres 'Bio Gemini', un agente de IA experto en biología. Tu propósito es dar respuestas precisas y educativas.
-             Reglas de Interacción:
-             - **Tono**: Didáctico, científico y amigable.
-             - **Precisión**: Prioriza la exactitud científica. Si no estás seguro, indícalo.
-             - **Seguridad**: Nunca des consejos médicos o veterinarios. Recomienda siempre consultar a un profesional cualificado.
-             - **Formato**: Usa Markdown (negritas, listas, etc.) para estructurar tus respuestas y mejorar la legibilidad."""),
-            ("human", "{user_question}")
-        ]
-    )
-    llm = ChatGroq(api_key=_api_key, model="llama3-70b-8192")
-    return prompt_template | llm | StrOutputParser()
-
-# --- GESTIÓN DE ESTADO DE SESIÓN ---
-if "groq_api_key" not in st.session_state: st.session_state.groq_api_key = None
-if "messages" not in st.session_state: st.session_state.messages = []
-if "chain" not in st.session_state: st.session_state.chain = None
-
-# --- PANTALLA DE BIENVENIDA / API KEY ---
-if not st.session_state.groq_api_key:
-    st.markdown("<div class='api-container'>", unsafe_allow_html=True)
-    
-    if logo_exists:
-        st.image(logo_path, width=80)
-    else:
-        st.markdown("<p style='font-size: 60px; text-align: center;'>🧬</p>", unsafe_allow_html=True)
-    
-    st.markdown("<h1 style='text-align: center; color: #FFFFFF;'>Bienvenido a Bio Gemini</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center;'>Para comenzar, necesitas una API Key de Groq.</p>", unsafe_allow_html=True)
-    
-    with st.form("api_key_form"):
-        api_key_input = st.text_input(
-            "Tu API Key de Groq", type="password", placeholder="gsk_xxxxxxxxxx", 
-            help="Obtén tu clave gratuita en console.groq.com"
-        )
-        submitted = st.form_submit_button("Activar Bio Gemini")
-        if submitted:
-            if api_key_input and api_key_input.startswith("gsk_"):
-                st.session_state.groq_api_key = api_key_input
-                st.session_state.chain = get_chatbot_chain(st.session_state.groq_api_key)
-                st.rerun()
-            else:
-                st.error("Por favor, ingresa una API Key de Groq válida que comience con 'gsk_'.")
-    st.markdown("</div>", unsafe_allow_html=True)
-
-# --- INTERFAZ DE CHAT PRINCIPAL ---
-else:
-    st.markdown("<h1 style='text-align: center; color: var(--accent-green);'>Bio Gemini</h1>", unsafe_allow_html=True)
-    
-    USER_AVATAR = "👤"
-    BOT_AVATAR = logo_path if logo_exists else "✨"
-
-    if not st.session_state.messages:
-        st.markdown("<h2 style='text-align: center; color: var(--text-primary);'>¿Cómo puedo ayudarte hoy?</h2>", unsafe_allow_html=True)
-        st.markdown
+def get_chatbot_chain(_api_
