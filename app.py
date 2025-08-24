@@ -7,13 +7,13 @@ import base64
 
 # --- CONFIGURACIÓN DE LA PÁGINA ---
 # Logo de Gemini en formato Base64 para usarlo como page_icon
-LOGO_IMAGE_BASE64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAFGklEQVRYw6WWa3BU1RXH/2/ubt6bN5PZbJJsJjebJBESSCgKlKgUqCgU+QcKx1IqLV2lY6VjpaV1tBoq2rGjY6V1tB2tY6VjqR2hUikgKEEQCAl5kBwS3mxy895t7t19zh/aJCSEmPj+zJ2dO/f8z/nO/5z/OWfG/4x/a4tQe+ORvBGt/bZJ29h5e7g/D9/8/3wI/bX78+eLzWfW30WwB49dF/eA24d/t87t3/z3/wB/gG/z3/gH/A//gP/gP/wH/gH/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/g-AAAABJRU5ErkJggg=="
+LOGO_IMAGE_BASE64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAFGklEQVRYw6WWa3BU1RXH/2/ubt6bN5PZbJJsJjebJBESSCgKlKgUqCgU+QcKx1IqLV2lY6VjpaV1tBoq2rGjY6V1tB2tY6VjqR2hUikgKEEQCAl5kBwS3mxy895t7t19zh/aJCSEmPj+zJ2dO/f8z/nO/5z/OWfG/4x/a4tQe+ORvBGt/bZJ29h5e7g/D9/8/3wI/bX78+eLzWfW30WwB49dF/eA24d/t87t3/z3/wB/gG/z3/gH/A//gP/gP/wH/gH/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/g-AAAABJRU5ErkJggg=="
 
 st.set_page_config(
     page_title="Bio Gemini",
     page_icon=LOGO_IMAGE_BASE64,
     layout="centered",
-    initial_sidebar_state="collapsed" # La barra lateral ya no se usa, pero la dejamos colapsada
+    initial_sidebar_state="collapsed"
 )
 
 # --- INYECCIÓN DE CSS PARA EMULAR LA INTERFAZ DE GEMINI ---
@@ -24,11 +24,11 @@ st.markdown("""
 /* Reset básico y configuración de fuente */
 body {
     font-family: 'Google Sans', sans-serif, system-ui;
-    background-color: #131314 !important;
+    background-color: #131314 !important; /* Fondo principal de Gemini */
     color: #e3e3e3;
 }
 
-/* Contenedor principal y vista de la app */
+/* Contenedor principal de la aplicación y vista principal */
 .stApp, [data-testid="stAppViewContainer"], [data-testid="stBottomBlockContainer"] {
     background-color: #131314;
 }
@@ -36,6 +36,12 @@ body {
 /* Ocultar la barra lateral por completo */
 [data-testid="stSidebar"] {
     display: none;
+}
+
+/* <<--- NUEVA REGLA PARA EL TEXTO DEL INPUT --->> */
+/* Estilo para etiquetas de los widgets (hace el texto "API Key de Groq" blanco) */
+label {
+    color: #FFFFFF !important;
 }
 
 /* Área de entrada del chat (Prompt) */
@@ -84,6 +90,7 @@ header {visibility: hidden;}
 </style>
 """, unsafe_allow_html=True)
 
+
 # --- LÓGICA DEL AGENTE BIÓLOGO (sin cambios) ---
 prompt_template = ChatPromptTemplate.from_messages(
     [
@@ -98,7 +105,7 @@ prompt_template = ChatPromptTemplate.from_messages(
          Reglas de Interacción:
          -   **Tono**: Didáctico, científico y amigable.
          -   **Precisión**: Prioriza la exactitud. Si no estás seguro, indícalo.
-         -   **Seguridad**: No proporciones consejos médicos o veterinarios; recomienda consultar a un profesional.
+         -   **Seguridad**: No des consejos médicos o veterinarios; recomienda consultar a un profesional.
          -   **Formato**: Usa **negritas** para términos clave y listas para organizar la información."""),
         ("human", "{user_question}")
     ]
@@ -116,8 +123,9 @@ if "groq_api_key" not in st.session_state:
 
 # Si no hay API key, mostrar el formulario "modal"
 if not st.session_state.groq_api_key:
-    st.markdown("<h1 style='text-align: center; color: #e3e3e3;'>Bienvenido a Bio Gemini</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center;'>Para comenzar, necesitas una API Key de Groq.</p>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center; color: #FFFFFF;'>Bienvenido a Bio Gemini</h1>", unsafe_allow_html=True)
+    # <<--- TEXTO DE INSTRUCCIÓN EN COLOR BLANCO --->>
+    st.markdown("<p style='text-align: center; color: #FFFFFF;'>Para comenzar, necesitas una API Key de Groq.</p>", unsafe_allow_html=True)
 
     # Crear un contenedor centrado para el formulario
     col1, col2, col3 = st.columns([1,2,1])
@@ -134,7 +142,7 @@ if not st.session_state.groq_api_key:
             if submitted:
                 if api_key_input and api_key_input.startswith("gsk_"):
                     st.session_state.groq_api_key = api_key_input
-                    st.rerun()  # Recarga la app para pasar al chat
+                    st.rerun()
                 else:
                     st.error("Por favor, ingresa una API Key de Groq válida.")
 
@@ -167,4 +175,3 @@ else:
                     st.session_state.messages.append({"role": "assistant", "content": response})
                 except Exception as e:
                     st.error(f"Ocurrió un error. Verifica tu API Key o la conexión.")
-                    # Para depuración, podrías imprimir el error: print(e)
