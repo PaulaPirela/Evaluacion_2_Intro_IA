@@ -26,12 +26,12 @@ st.markdown("""
 :root {
     --primary-bg: #1e1e1e;      /* Gris oscuro para el fondo */
     --secondary-bg: #2b2b2b;    /* Gris un poco más claro para elementos */
-    --user-bg: #EAEAEA;         /* Gris claro para el usuario */
+    --user-message-bg: #3c4043;  /* Fondo para mensajes de usuario */
     --accent-green: #79F8B7;     /* Verde menta brillante */
     --accent-green-dark: #00A67E; /* Verde oscuro para botones */
     --text-light: #FFFFFF;       /* Texto blanco puro */
     --text-dark: #000000;        /* Texto negro */
-    --border-color: #3c4043;
+    --border-color: #4a4d52;
 }
 
 /* --- GENERALES --- */
@@ -82,29 +82,23 @@ div[data-testid="stForm"] button:hover {
     width: 40px; height: 40px;
 }
 .st-emotion-cache-1c7y2kd { /* Nombre del rol (User/Assistant) */
-    font-weight: 600; padding-bottom: 8px;
+    font-weight: 600; color: var(--text-light); padding-bottom: 8px;
 }
 
-/* Estilos para las burbujas de chat */
+/* <<--- ESTILOS CORREGIDOS PARA LAS BURBUJAS DE CHAT --->> */
 [data-testid="stChatMessage"] > div[data-testid="stMarkdown"] {
     padding: 1.2em; border-radius: 12px; line-height: 1.6;
+    color: var(--text-light); /* Texto blanco para todos los mensajes */
 }
 /* Respuestas del Agente: Fondo oscuro, texto blanco */
 [data-testid="stChatMessage"][data-testid="chat-message-assistant"] > div[data-testid="stMarkdown"] {
     background-color: var(--secondary-bg);
     border: 1px solid var(--border-color);
-    color: var(--text-light);
 }
-[data-testid="stChatMessage"][data-testid="chat-message-assistant"] .st-emotion-cache-1c7y2kd {
-    color: var(--text-light);
-}
-/* Mensajes del Usuario: Fondo claro, texto negro */
+/* Mensajes del Usuario: Fondo oscuro (diferente), texto blanco */
 [data-testid="stChatMessage"][data-testid="chat-message-user"] > div[data-testid="stMarkdown"] {
-    background-color: var(--user-bg);
-    color: var(--text-dark);
-}
-[data-testid="stChatMessage"][data-testid="chat-message-user"] .st-emotion-cache-1c7y2kd {
-    color: var(--text-light);
+    background-color: var(--user-message-bg);
+    border: 1px solid var(--border-color);
 }
 
 /* Área de entrada de texto */
@@ -118,25 +112,16 @@ div[data-testid="stForm"] button:hover {
     background: none; color: var(--text-light);
 }
 
-/* <<--- ESTILOS PARA LOS BOTONES DE SUGERENCIA --->> */
+/* Botones de sugerencia */
 .suggestion-buttons {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 10px;
-    max-width: 768px;
-    margin: 1rem auto 3rem auto;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 10px; max-width: 768px; margin: 1rem auto 3rem auto;
 }
 .suggestion-buttons .stButton button {
-    width: 100%;
-    text-align: left;
-    background-color: var(--secondary-bg);
-    border: 1px solid var(--border-color);
-    color: var(--text-light);
-    padding: 12px 16px;
-    border-radius: 12px;
-    transition: background-color 0.2s ease, border-color 0.2s ease;
-    font-size: 0.95em;
-    font-weight: 500;
+    width: 100%; text-align: left; background-color: var(--secondary-bg);
+    border: 1px solid var(--border-color); color: var(--text-light); padding: 12px 16px;
+    border-radius: 12px; transition: background-color 0.2s ease, border-color 0.2s ease;
+    font-size: 0.95em; font-weight: 500;
 }
 .suggestion-buttons .stButton button:hover {
     background-color: #3a3a3a;
@@ -216,7 +201,6 @@ else:
     USER_AVATAR = "👤"
     BOT_AVATAR = logo_path if logo_exists else "✨"
 
-    # <<--- LÓGICA PARA PREGUNTAS SUGERIDAS --->>
     if not st.session_state.messages:
         st.markdown("<h2 style='text-align: center; color: var(--text-light);'>¿Cómo puedo ayudarte hoy?</h2>", unsafe_allow_html=True)
         st.markdown("<div class='suggestion-buttons'>", unsafe_allow_html=True)
@@ -235,17 +219,14 @@ else:
                     st.rerun()
         st.markdown("</div>", unsafe_allow_html=True)
     else:
-        # Mostrar historial de chat solo si la conversación ya ha comenzado
         for message in st.session_state.messages:
             avatar = BOT_AVATAR if message["role"] == "assistant" else USER_AVATAR
             with st.chat_message(message["role"], avatar=avatar):
                 st.markdown(message["content"])
 
-    # Capturar la entrada del usuario (desde el input o desde los botones de sugerencia)
     prompt = st.chat_input("Pregúntame algo de biología...") or st.session_state.get("selected_prompt")
 
     if prompt:
-        # Limpiar el prompt seleccionado para que no se use de nuevo
         if st.session_state.selected_prompt:
             st.session_state.selected_prompt = None
             
@@ -254,15 +235,19 @@ else:
             st.markdown(prompt)
 
         with st.chat_message("assistant", avatar=BOT_AVATAR):
-            with st.spinner("Pensando..."):
-                try:
+            try:
+                # Usamos st.write_stream para respuestas en tiempo real, pero el spinner es buen feedback inicial
+                with st.spinner("Pensando..."):
+                    # Usamos predict para que LangChain maneje el historial automáticamente
                     response = st.session_state.chain.predict(input=prompt)
-                    st.markdown(response)
-                    st.session_state.messages.append({"role": "assistant", "content": response})
-                except Exception as e:
-                    error_message = "Lo siento, ha ocurrido un error. Verifica tu API Key y tu conexión."
-                    st.error(error_message)
-                    st.session_state.messages.append({"role": "assistant", "content": error_message})
+                
+                # Escribimos la respuesta completa (Groq es muy rápido, el streaming no es tan necesario)
+                st.markdown(response)
+                st.session_state.messages.append({"role": "assistant", "content": response})
+
+            except Exception as e:
+                error_message = "Lo siento, ha ocurrido un error. Verifica tu API Key y tu conexión."
+                st.error(error_message)
+                st.session_state.messages.append({"role": "assistant", "content": error_message})
         
-        # Recargar la página para limpiar el prompt del input y mostrar la nueva respuesta
         st.rerun()
