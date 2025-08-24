@@ -162,6 +162,8 @@ if groq_api_key:
         with st.chat_message("user", avatar="👤"):
             st.markdown(prompt)
 
+
+        
         with st.chat_message("assistant", avatar="✨"):
             with st.spinner("Pensando..."):
                 chain = get_chatbot_chain(groq_api_key)
