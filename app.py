@@ -7,7 +7,7 @@ import base64
 
 # --- CONFIGURACIÓN DE LA PÁGINA ---
 # Logo de Gemini en formato Base64 para usarlo como page_icon
-LOGO_IMAGE_BASE64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAFGklEQVRYw6WWa3BU1RXH/2/ubt6bN5PZbJJsJjebJBESSCgKlKgUqCgU+QcKx1IqLV2lY6VjpaV1tBoq2rGjY6V1tB2tY6VjqR2hUikgKEEQCAl5kBwS3mxy895t7t19zh/aJCSEmPj+zJ2dO/f8z/nO/5z/OWfG/4x/a4tQe+ORvBGt/bZJ29h5e7g/D9/8/3wI/bX78+eLzWfW30WwB49dF/eA24d/t87t3/z3/wB/gG/z3/gH/A//gP/gP/wH/gH/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/g-AAAABJRU5ErkJggg=="
+LOGO_IMAGE_BASE64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAFGklEQVRYw6WWa3BU1RXH/2/ubt6bN5PZbJJsJjebJBESSCgKlKgUqCgU+QcKx1IqLV2lY6VjpaV1tBoq2rGjY6V1tB2tY6VjqR2hUikgKEEQCAl5kBwS3mxy895t7t19zh/aJCSEmPj+zJ2dO/f8z/nO/5z/OWfG/4x/a4tQe+ORvBGt/bZJ29h5e7g/D9/8/3wI/bX78+eLzWfW30WwB49dF/eA24d/t87t3/z3/wB/gG/z3/gH/A//gP/gP/wH/gH/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/gP/g-AAAABJRU5ErkJggg=="
 
 st.set_page_config(
     page_title="Bio Gemini",
@@ -16,15 +16,15 @@ st.set_page_config(
     initial_sidebar_state="auto"
 )
 
-# --- INYECCIÓN DE CSS PARA EMULAR LA INTERFAZ DE GEMINI ---
+# --- INYECCIÓN DE CSS PARA EMULAR LA INTERFACE DE GEMINI ---
 st.markdown("""
 <style>
-/* Reset básico y configuración de fuente */
 @import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap');
 
+/* Reset básico y configuración de fuente */
 body {
     font-family: 'Google Sans', sans-serif, system-ui;
-    background-color: #131314; /* Fondo principal de Gemini */
+    background-color: #131314 !important; /* Fondo principal de Gemini */
     color: #e3e3e3;
 }
 
@@ -49,19 +49,23 @@ body {
     color: #fafafa !important;
 }
 
+/* Contenedor que envuelve la barra de entrada */
+[data-testid="stBottomBlockContainer"] {
+    background-color: #131314; /* Asegura que el fondo coincida con el principal */
+}
+
 /* Área de entrada del chat (Prompt) */
 [data-testid="stChatInput"] {
-    background-color: #1e1f20; /* Color oscuro para el contenedor del input */
+    background-color: #1e1f20;
     border-radius: 28px;
     padding: 10px 15px;
     border: 1px solid #3c4043;
     margin: 1rem auto;
     max-width: 768px;
 }
-/* El área de texto real dentro del componente de chat */
 [data-testid="stChatInput"] textarea {
-    background-color: transparent !important; /* Hace el fondo del textarea transparente */
-    color: #e3e3e3; /* Letra blanca/clara */
+    background: none;
+    color: #e3e3e3;
 }
 [data-testid="stChatInput"] button {
     border-radius: 50%;
@@ -86,20 +90,17 @@ body {
 }
 /* Estilo específico para el mensaje del asistente (IA) */
 [data-testid="stChatMessage"][data-testid="chat-message-assistant"] > div[data-testid="stMarkdown"] {
-    background-color: #1e1f20; /* Fondo sutil para la respuesta */
+    background-color: #1e1f20;
 }
 
 /* Ocultar elementos de Streamlit */
 #MainMenu {visibility: hidden;}
 footer {visibility: hidden;}
 header {visibility: hidden;}
-
 </style>
 """, unsafe_allow_html=True)
 
-
 # --- TÍTULO Y DESCRIPCIÓN ---
-# Título centrado usando HTML
 st.markdown("<h1 style='text-align: center; color: #e3e3e3;'>Bio Gemini</h1>", unsafe_allow_html=True)
 
 # --- BARRA LATERAL PARA LA API KEY ---
@@ -129,7 +130,7 @@ prompt_template = ChatPromptTemplate.from_messages(
          """Eres 'Bio Gemini', un agente de IA experto en biología. Tu propósito es dar respuestas precisas y educativas.
          
          Tus capacidades principales son:
-         1.  **Explicar Conceptos Biológicos**: Define y explica términos y conceptos (ej: '¿Qué es la meiosis?'). Usa analogías simples para temas complejos.
+         1.  **Explicar Conceptos Biológicos**: Define y explica términos biológicos. Usa analogías simples para temas complejos.
          2.  **Identificar Especies**: A partir de una descripción, intenta identificar la especie e indica tu nivel de confianza.
          3.  **Detallar Procesos**: Explica procesos complejos paso a paso (ej: 'Explica la fotosíntesis').
          
