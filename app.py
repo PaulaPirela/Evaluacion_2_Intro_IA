@@ -4,22 +4,22 @@ from langchain_groq import ChatGroq
 from langchain.prompts import ChatPromptTemplate
 from langchain.schema.output_parser import StrOutputParser
 
-# --- CONFIGURACIÓN DE LA PÁGINA ---
+# --- CONFIGURACIÓN DE LA PÁGINA (ESTILO GEMINI) ---
 st.set_page_config(
-    page_title="Bio-Asistente IA",
+    page_title="Bio Agent",
     page_icon="🧬",
     layout="centered",
     initial_sidebar_state="auto"
 )
 
 # --- TÍTULO Y DESCRIPCIÓN ---
-st.title("🧬 Bio-Asistente IA")
+st.title("🧬 Bio Agent")
 st.caption("Tu experto en biología personal, impulsado por IA")
 st.markdown("""
-Bienvenido al Bio-Asistente. Soy un agente especializado en biología, entrenado para ayudarte con tus dudas. 
-Puedes preguntarme sobre:
+Bienvenido a Bio Agent. Soy un agente especializado en biología, listo para ayudarte.
+Puedes consultarme sobre:
 - **Conceptos biológicos**: Fotosíntesis, mitosis, genética, etc.
-- **Identificación de especies**: Describe un animal o planta y trataré de identificarlo.
+- **Identificación de especies**: Describe un ser vivo y trataré de identificarlo.
 - **Procesos complejos**: Explícame el ciclo de Krebs, la replicación del ADN, etc.
 
 Para comenzar, por favor ingresa tu API Key de Groq en la barra lateral.
@@ -46,12 +46,10 @@ with st.sidebar:
 # --- LÓGICA DEL AGENTE BIÓLOGO ---
 
 # 1. Plantilla del Prompt (Instrucciones para el LLM)
-# Esta es la parte más importante para especializar al agente.
-# Le decimos cómo debe comportarse, qué rol debe adoptar y cómo debe responder.
 prompt_template = ChatPromptTemplate.from_messages(
     [
         ("system", 
-         """Eres 'Bio-Asistente', un agente de inteligencia artificial experto en biología. Tu propósito es proporcionar respuestas precisas, claras y educativas sobre cualquier tema biológico.
+         """Eres 'Bio Agent', un agente de inteligencia artificial experto en biología. Tu propósito es proporcionar respuestas precisas, claras y educativas sobre cualquier tema biológico.
          
          Tus capacidades principales son:
          1.  **Explicar Conceptos Biológicos**: Define y explica términos y conceptos (ej: '¿Qué es la meiosis?'). Usa analogías simples para temas complejos.
@@ -71,23 +69,19 @@ prompt_template = ChatPromptTemplate.from_messages(
 # 2. Inicialización del Chatbot
 def get_chatbot_chain(api_key):
     """Crea y devuelve la cadena de LangChain para el chatbot."""
-    # Usamos el modelo Llama 3 de 70 mil millones de parámetros, que es excelente para razonamiento.
     llm = ChatGroq(
         api_key=api_key,
         model="llama3-70b-8192"
     )
-    # Creamos la "cadena" que une el prompt, el modelo y el procesador de salida.
     return prompt_template | llm | StrOutputParser()
 
 # --- INTERFAZ DE USUARIO PRINCIPAL ---
 
 # Verificación de la API Key
 if groq_api_key:
-    st.success("API Key cargada correctamente. ¡Listo para recibir tus preguntas!")
-    
     # Inicialización del historial de chat en el estado de la sesión
     if "messages" not in st.session_state:
-        st.session_state.messages = []
+        st.session_state.messages = [{"role": "assistant", "content": "Hola, ¿en qué puedo ayudarte hoy?"}]
 
     # Mostrar mensajes previos
     for message in st.session_state.messages:
@@ -115,5 +109,5 @@ if groq_api_key:
                     st.info("Verifica que tu API Key sea correcta y tenga saldo.")
 
 else:
-    st.warning("Por favor, ingresa tu API Key de Groq en la barra lateral para activar el Bio-Asistente.")
-    st.image("https://i.imgur.com/3g2Q1m9.png", caption="Ingresa tu API Key en el campo de la izquierda.", use_column_width=True)
+    st.warning("Por favor, ingresa tu API Key de Groq en la barra lateral para activar Bio Agent.")
+    st.info("La interfaz de chat aparecerá aquí una vez que la clave sea validada.")
