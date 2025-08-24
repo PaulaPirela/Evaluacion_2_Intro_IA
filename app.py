@@ -114,4 +114,32 @@ def get_chatbot_chain(api_key):
         api_key=api_key,
         model="llama3-70b-8192"
     )
-    return prompt_template |
+    return prompt_template | llm | StrOutputParser()
+
+# --- INTERFAZ DE USUARIO PRINCIPAL ---
+if groq_api_key:
+    if "messages" not in st.session_state:
+        st.session_state.messages = [{"role": "assistant", "content": "Hola, ¿en qué puedo ayudarte hoy?"}]
+
+    for message in st.session_state.messages:
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
+
+    if prompt := st.chat_input("Pregúntame algo sobre biología..."):
+        st.session_state.messages.append({"role": "user", "content": prompt})
+        with st.chat_message("user"):
+            st.markdown(prompt)
+
+        with st.chat_message("assistant"):
+            with st.spinner("Pensando... 🧠"):
+                chain = get_chatbot_chain(groq_api_key)
+                try:
+                    response = chain.invoke({"user_question": prompt})
+                    st.markdown(response)
+                    st.session_state.messages.append({"role": "assistant", "content": response})
+                except Exception as e:
+                    st.error(f"Error al contactar el modelo: {e}")
+                    st.info("Verifica que tu API Key sea correcta y tenga saldo.")
+else:
+    st.warning("Por favor, ingresa tu API Key de Groq en la barra lateral para activar Bio Agent.")
+    st.info("La interfaz de chat aparecerá aquí una vez que la clave sea validada.")
