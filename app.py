@@ -37,21 +37,9 @@ div[data-testid="stForm"] button:hover { background-color: var(--accent-green); 
 .stChatMessage { max-width: 768px; margin: 0 auto 2rem auto; }
 [data-testid="stChatMessage"] [data-testid="stAvatar"] img { width: 40px; height: 40px; }
 .st-emotion-cache-1c7y2kd { color: var(--text-light); font-weight: 600; padding-bottom: 8px; }
-[data-testid="stChatMessage"] > div[data-testid="stMarkdown"] { padding: 1.2em; border-radius: 12px; line-height: 1.6; }
-
-/* <<--- CORRECCIÓN APLICADA AQUÍ --->> */
-/* Respuestas del Agente: Fondo oscuro, texto blanco */
-[data-testid="stChatMessage"][data-testid="chat-message-assistant"] > div[data-testid="stMarkdown"] {
-    background-color: var(--secondary-bg);
-    border: 1px solid var(--border-color);
-    color: var(--text-light); /* Se asegura que el texto sea blanco */
-}
-/* Mensajes del Usuario: Fondo oscuro, texto blanco */
-[data-testid="stChatMessage"][data-testid="chat-message-user"] > div[data-testid="stMarkdown"] {
-    background-color: var(--user-message-bg);
-    border: 1px solid var(--border-color);
-    color: var(--text-light); /* Se asegura que el texto sea blanco */
-}
+[data-testid="stChatMessage"] > div[data-testid="stMarkdown"] { padding: 1.2em; border-radius: 12px; line-height: 1.6; color: var(--text-light) !important; }
+[data-testid="stChatMessage"][data-testid="chat-message-assistant"] > div[data-testid="stMarkdown"] { background-color: var(--secondary-bg); border: 1px solid var(--border-color); }
+[data-testid="stChatMessage"][data-testid="chat-message-user"] > div[data-testid="stMarkdown"] { background-color: var(--user-message-bg); border: 1px solid var(--border-color); }
 [data-testid="stChatInput"] { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background-color: var(--primary-bg); border-top: 1px solid var(--border-color); padding-top: 10px; width: 100%; max-width: 768px; }
 [data-testid="stChatInput"] textarea { background-color: #FFFFFF; color: var(--text-dark); border-radius: 18px; border: 1px solid #DDDDDD; }
 [data-testid="stChatInput"] textarea::placeholder { color: #666666; }
@@ -66,7 +54,9 @@ def get_conversation_chain(_api_key):
         ("system", """Eres 'Bio Gemini', un agente de IA experto en biología. Responde de forma precisa, educativa y amigable. Utiliza el historial de conversación para entender el contexto de las nuevas preguntas.
         Reglas:
         - No des consejos médicos o veterinarios.
-        - Usa **negritas** para términos clave."""),
+        - Usa **negritas** para términos clave.
+        - Cuando te pregunten por un concepto, proporciona una explicación completa y directa. Evita terminar tus respuestas con preguntas como '¿Quieres saber más?'. # <--- REGLA AÑADIDA
+        """),
         ("human", "{history}"),
         ("human", "{input}")
     ])
