@@ -40,11 +40,28 @@ div[data-testid="stForm"] button:hover { background-color: var(--accent-green); 
 [data-testid="stChatMessage"] > div[data-testid="stMarkdown"] { padding: 1.2em; border-radius: 12px; line-height: 1.6; color: var(--text-light) !important; }
 [data-testid="stChatMessage"][data-testid="chat-message-assistant"] > div[data-testid="stMarkdown"] { background-color: var(--secondary-bg); border: 1px solid var(--border-color); }
 [data-testid="stChatMessage"][data-testid="chat-message-user"] > div[data-testid="stMarkdown"] { background-color: var(--user-message-bg); border: 1px solid var(--border-color); }
-[data-testid="stChatInput"] { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background-color: rgba(43, 43, 43, 0.9); backdrop-filter: blur(10px); border-radius: 24px; padding: 8px 12px; border: 1px solid var(--border-color); width: 90%; max-width: 768px; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
-[data-testid="stChatInput"] textarea { background: none; color: var(--text-light); }
-[data-testid="stChatInput"] textarea::placeholder { color: rgba(255, 255, 255, 0.5); }
+
+/* <<--- CORRECCIÓN DE ESTILO PARA EL INPUT DEL CHAT --->> */
+[data-testid="stChatInput"] {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    background-color: var(--primary-bg); /* Fondo igual al de la app para que no se note */
+    border-top: 1px solid var(--border-color); /* Línea sutil de separación */
+    padding-top: 10px;
+    width: 100%; 
+    max-width: 768px; 
+}
+[data-testid="stChatInput"] textarea {
+    background-color: #FFFFFF; /* Fondo blanco */
+    color: var(--text-dark);   /* Texto negro */
+    border-radius: 18px;
+    border: 1px solid #DDDDDD;
+}
+[data-testid="stChatInput"] textarea::placeholder {
+    color: #666666; /* Placeholder en gris oscuro */
+}
 </style>
 """, unsafe_allow_html=True)
+
 
 # --- LÓGICA DEL AGENTE CON MEMORIA ---
 @st.cache_resource
@@ -114,8 +131,6 @@ else:
         with st.chat_message(message["role"], avatar=avatar):
             st.markdown(message["content"])
 
-    # <<--- CORRECCIÓN APLICADA AQUÍ --->>
-    # La caja de chat ahora siempre está visible.
     if prompt := st.chat_input("Pregúntame algo de biología..."):
         st.session_state.messages.append({"role": "user", "content": prompt})
         with st.chat_message("user", avatar=USER_AVATAR):
@@ -137,5 +152,4 @@ else:
                 st.error(error_message)
                 st.session_state.messages.append({"role": "assistant", "content": error_message})
         
-        # Recargamos la página para asegurar que el estado se actualice correctamente.
         st.rerun()
