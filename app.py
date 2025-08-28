@@ -18,7 +18,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- INYECCIÓN DE CSS (SIN CAMBIOS) ---
+# --- INYECCIÓN DE CSS ---
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap');
@@ -49,7 +49,6 @@ div[data-testid="stForm"] button:hover { background-color: var(--accent-green); 
 .suggestion-buttons .stButton button:hover { background-color: #3a3a3a; border-color: var(--accent-green); }
 </style>
 """, unsafe_allow_html=True)
-
 
 # --- LÓGICA DEL AGENTE CON MEMORIA ---
 @st.cache_resource
@@ -112,6 +111,11 @@ else:
     USER_AVATAR = "👤"
     BOT_AVATAR = logo_path if logo_exists else "✨"
 
+    # <<--- CORRECCIÓN DE FLUJO LÓGICO --->>
+    # 1. Primero, se maneja la lógica de las sugerencias y la entrada del usuario.
+    # Esta variable contendrá el prompt que se debe procesar en esta ejecución.
+    prompt_to_process = None
+
     if not st.session_state.messages:
         st.markdown("<h2 style='text-align: center; color: var(--text-light);'>¿Cómo puedo ayudarte hoy?</h2>", unsafe_allow_html=True)
         question_bank = [
@@ -125,42 +129,36 @@ else:
         cols = st.columns(2)
         for i, suggestion in enumerate(suggestions):
             with cols[i % 2]:
-                # <--- CORRECCIÓN 1: Se elimina st.rerun() de aquí.
-                # El botón ya causa una recarga, no es necesario forzar otra.
                 if st.button(suggestion, key=f"suggestion_{i}"):
-                    st.session_state.selected_prompt = suggestion
-                    # st.rerun() <-- ESTA LÍNEA SE ELIMINÓ
+                    # Al presionar un botón, asignamos su valor para ser procesado.
+                    prompt_to_process = suggestion
         st.markdown("</div>", unsafe_allow_html=True)
-    
-    # El historial se muestra aquí para que aparezca incluso si se selecciona una sugerencia
+
+    # 2. Luego, se dibuja el historial de mensajes que ya existe.
     for message in st.session_state.messages:
         avatar = BOT_AVATAR if message["role"] == "assistant" else USER_AVATAR
         with st.chat_message(message["role"], avatar=avatar):
             st.markdown(message["content"])
 
-    prompt = st.chat_input("Pregúntame algo de biología...") or st.session_state.get("selected_prompt")
+    # 3. Se captura la entrada del chat de texto. Si ya hay un prompt de un botón, este se ignora.
+    if chat_input := st.chat_input("Pregúntame algo de biología..."):
+        prompt_to_process = chat_input
 
-    if prompt:
-        st.session_state.messages.append({"role": "user", "content": prompt})
+    # 4. Si hay un prompt para procesar (de un botón o del input), se ejecuta el chat.
+    if prompt_to_process:
+        st.session_state.messages.append({"role": "user", "content": prompt_to_process})
         with st.chat_message("user", avatar=USER_AVATAR):
-            st.markdown(prompt)
-
-        # <--- CORRECCIÓN 2: Limpiar el prompt seleccionado INMEDIATAMENTE después de usarlo.
-        if st.session_state.selected_prompt:
-            st.session_state.selected_prompt = None
+            st.markdown(prompt_to_process)
 
         with st.chat_message("assistant", avatar=BOT_AVATAR):
             try:
-                # Se cambió a st.write_stream para una respuesta más fluida.
-                response_stream = st.session_state.chain.stream({"input": prompt})
+                response_stream = st.session_state.chain.stream({"input": prompt_to_process})
                 response = st.write_stream(response_stream)
                 st.session_state.messages.append({"role": "assistant", "content": response})
-
             except Exception as e:
                 error_message = "Lo siento, ha ocurrido un error. Verifica tu API Key o tu conexión."
                 st.error(error_message)
                 st.session_state.messages.append({"role": "assistant", "content": error_message})
         
-        # <--- CORRECCIÓN 3: Se elimina el st.rerun() final.
-        # Streamlit actualizará la pantalla automáticamente al terminar el script.
-        # st.rerun()  <-- ESTA LÍNEA SE ELIMINÓ
+        # Se recarga la página para mostrar el nuevo estado completo y limpiar el input.
+        st.rerun()
