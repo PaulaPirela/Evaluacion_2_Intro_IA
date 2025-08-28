@@ -2,7 +2,6 @@ import streamlit as st
 import os
 from langchain_groq import ChatGroq
 from langchain.prompts import ChatPromptTemplate
-from langchain.schema.output_parser import StrOutputParser
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationChain
 import random
@@ -67,7 +66,6 @@ def get_conversation_chain(_api_key):
 if "groq_api_key" not in st.session_state: st.session_state.groq_api_key = None
 if "messages" not in st.session_state: st.session_state.messages = []
 if "chain" not in st.session_state: st.session_state.chain = None
-if "input_disabled" not in st.session_state: st.session_state.input_disabled = False
 
 # --- PANTALLA DE BIENVENIDA / API KEY ---
 if not st.session_state.groq_api_key:
@@ -99,7 +97,6 @@ else:
         st.markdown('<div style="text-align: left; padding-top: 1rem;">', unsafe_allow_html=True)
         if st.button("➕ Nuevo Chat"):
             st.session_state.messages = []
-            st.session_state.input_disabled = False
             if st.session_state.chain: st.session_state.chain.memory.clear()
             st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
@@ -116,33 +113,29 @@ else:
         avatar = BOT_AVATAR if message["role"] == "assistant" else USER_AVATAR
         with st.chat_message(message["role"], avatar=avatar):
             st.markdown(message["content"])
-    
-    # El input del chat solo aparece si no está deshabilitado
-    if not st.session_state.input_disabled:
-        if prompt := st.chat_input("Pregúntame algo de biología..."):
-            st.session_state.messages.append({"role": "user", "content": prompt})
-            with st.chat_message("user", avatar=USER_AVATAR):
-                st.markdown(prompt)
 
-            with st.chat_message("assistant", avatar=BOT_AVATAR):
-                try:
-                    # <<--- CORRECCIÓN APLICADA AQUÍ --->>
-                    # Se crea una función generadora para extraer solo el texto de la respuesta del stream.
-                    def extract_response_from_stream(stream):
-                        for chunk in stream:
-                            if "response" in chunk:
-                                yield chunk["response"]
+    # <<--- CORRECCIÓN APLICADA AQUÍ --->>
+    # La caja de chat ahora siempre está visible.
+    if prompt := st.chat_input("Pregúntame algo de biología..."):
+        st.session_state.messages.append({"role": "user", "content": prompt})
+        with st.chat_message("user", avatar=USER_AVATAR):
+            st.markdown(prompt)
 
-                    # Se pasa el stream original a través de la nueva función extractora
-                    response_stream = st.session_state.chain.stream({"input": prompt})
-                    response_content = st.write_stream(extract_response_from_stream(response_stream))
-                    
-                    st.session_state.messages.append({"role": "assistant", "content": response_content})
-                    st.session_state.input_disabled = True
+        with st.chat_message("assistant", avatar=BOT_AVATAR):
+            try:
+                def extract_response_from_stream(stream):
+                    for chunk in stream:
+                        if "response" in chunk:
+                            yield chunk["response"]
                 
-                except Exception as e:
-                    error_message = "Lo siento, ha ocurrido un error. Verifica tu API Key o tu conexión."
-                    st.error(error_message)
-                    st.session_state.messages.append({"role": "assistant", "content": error_message})
-            
-            st.rerun()
+                response_stream = st.session_state.chain.stream({"input": prompt})
+                response_content = st.write_stream(extract_response_from_stream(response_stream))
+                st.session_state.messages.append({"role": "assistant", "content": response_content})
+
+            except Exception as e:
+                error_message = "Lo siento, ha ocurrido un error. Verifica tu API Key o tu conexión."
+                st.error(error_message)
+                st.session_state.messages.append({"role": "assistant", "content": error_message})
+        
+        # Recargamos la página para asegurar que el estado se actualice correctamente.
+        st.rerun()
