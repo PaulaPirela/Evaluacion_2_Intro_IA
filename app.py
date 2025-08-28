@@ -5,6 +5,7 @@ from langchain.prompts import ChatPromptTemplate
 from langchain.schema.output_parser import StrOutputParser
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationChain
+import random
 
 # --- CONFIGURACIÓN DE LA PÁGINA Y DEL LOGO ---
 logo_path = "logo.png"
@@ -66,7 +67,6 @@ def get_conversation_chain(_api_key):
 if "groq_api_key" not in st.session_state: st.session_state.groq_api_key = None
 if "messages" not in st.session_state: st.session_state.messages = []
 if "chain" not in st.session_state: st.session_state.chain = None
-# Nuevo estado para controlar la visibilidad del input
 if "input_disabled" not in st.session_state: st.session_state.input_disabled = False
 
 # --- PANTALLA DE BIENVENIDA / API KEY ---
@@ -99,7 +99,7 @@ else:
         st.markdown('<div style="text-align: left; padding-top: 1rem;">', unsafe_allow_html=True)
         if st.button("➕ Nuevo Chat"):
             st.session_state.messages = []
-            st.session_state.input_disabled = False # Reactiva el input
+            st.session_state.input_disabled = False
             if st.session_state.chain: st.session_state.chain.memory.clear()
             st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
@@ -109,16 +109,14 @@ else:
     USER_AVATAR = "👤"
     BOT_AVATAR = logo_path if logo_exists else "✨"
 
-    # Mensaje de bienvenida si el chat está vacío
     if not st.session_state.messages:
         st.session_state.messages.append({"role": "assistant", "content": "Hola, soy Bio Gemini. ¿En qué puedo ayudarte hoy?"})
 
-    # Mostrar historial de chat
     for message in st.session_state.messages:
         avatar = BOT_AVATAR if message["role"] == "assistant" else USER_AVATAR
         with st.chat_message(message["role"], avatar=avatar):
             st.markdown(message["content"])
-
+    
     # El input del chat solo aparece si no está deshabilitado
     if not st.session_state.input_disabled:
         if prompt := st.chat_input("Pregúntame algo de biología..."):
@@ -128,17 +126,23 @@ else:
 
             with st.chat_message("assistant", avatar=BOT_AVATAR):
                 try:
-                    response_stream = st.session_state.chain.stream({"input": prompt})
-                    response = st.write_stream(response_stream)
-                    st.session_state.messages.append({"role": "assistant", "content": response})
-                    
-                    # Deshabilitar el input después de una respuesta exitosa
-                    st.session_state.input_disabled = True
+                    # <<--- CORRECCIÓN APLICADA AQUÍ --->>
+                    # Se crea una función generadora para extraer solo el texto de la respuesta del stream.
+                    def extract_response_from_stream(stream):
+                        for chunk in stream:
+                            if "response" in chunk:
+                                yield chunk["response"]
 
+                    # Se pasa el stream original a través de la nueva función extractora
+                    response_stream = st.session_state.chain.stream({"input": prompt})
+                    response_content = st.write_stream(extract_response_from_stream(response_stream))
+                    
+                    st.session_state.messages.append({"role": "assistant", "content": response_content})
+                    st.session_state.input_disabled = True
+                
                 except Exception as e:
                     error_message = "Lo siento, ha ocurrido un error. Verifica tu API Key o tu conexión."
                     st.error(error_message)
                     st.session_state.messages.append({"role": "assistant", "content": error_message})
             
-            # Recargar la página para que el cambio de estado (input_disabled) tenga efecto
             st.rerun()
