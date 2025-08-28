@@ -21,35 +21,67 @@ st.set_page_config(
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap');
+
 :root {
-    --primary-bg: #1e1e1e; --secondary-bg: #2b2b2b; --user-message-bg: #3c4043;
-    --accent-green: #79F8B7; --accent-green-dark: #00A67E; --text-light: #FFFFFF;
-    --text-dark: #000000; --border-color: #4a4d52;
+    --primary-bg: #1e1e1e;
+    --secondary-bg: #2b2b2b;
+    --user-message-bg: #3c4043;
+    --accent-green: #79F8B7;
+    --accent-green-dark: #00A67E;
+    --text-light: #FFFFFF; /* BLANCO PURO */
+    --text-dark: #000000;
+    --border-color: #4a4d52;
 }
+
 body { font-family: 'Google Sans', sans-serif, system-ui; background-color: var(--primary-bg) !important; color: var(--text-light); }
 .stApp, [data-testid="stAppViewContainer"], [data-testid="stBottomBlockContainer"] { background-color: var(--primary-bg); }
 [data-testid="stSidebar"], [data-testid="stHeader"], #MainMenu, footer { display: none; }
+
 div[data-testid="stForm"] button { background-color: var(--accent-green-dark); color: white; font-weight: 600; border: none; border-radius: 8px; padding: 12px 20px; width: 100%; transition: background-color 0.3s ease; }
 div[data-testid="stForm"] button:hover { background-color: var(--accent-green); color: var(--primary-bg); border: none; }
-.stTextInput label { color: var(--text-light) !important; }
+
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 [data-testid="stChatMessage"] { background: none; padding: 0; margin: 0; animation: fadeIn 0.5s ease-out; }
 .stChatMessage { max-width: 768px; margin: 0 auto 2rem auto; }
 [data-testid="stChatMessage"] [data-testid="stAvatar"] img { width: 40px; height: 40px; }
 .st-emotion-cache-1c7y2kd { color: var(--text-light); font-weight: 600; padding-bottom: 8px; }
-[data-testid="stChatMessage"] > div[data-testid="stMarkdown"] { padding: 1.2em; border-radius: 12px; line-height: 1.6; }
 
-/* <<--- CORRECCIÓN DE COLOR APLICADA AQUÍ --->> */
+/* <<--- CORRECCIÓN DE MÁXIMA PRIORIDAD PARA EL COLOR DEL TEXTO --->> */
+
+/* Regla general para el contenedor del mensaje */
+[data-testid="stChatMessage"] > div[data-testid="stMarkdown"] {
+    padding: 1.2em;
+    border-radius: 12px;
+    line-height: 1.6;
+}
+
+/* Reglas específicas y forzadas para el texto del AGENTE */
+[data-testid="stChatMessage"][data-testid="chat-message-assistant"] > div[data-testid="stMarkdown"],
+[data-testid="stChatMessage"][data-testid="chat-message-assistant"] p,
+[data-testid="stChatMessage"][data-testid="chat-message-assistant"] li,
+[data-testid="stChatMessage"][data-testid="chat-message-assistant"] strong {
+    color: #FFFFFF !important; /* FORZAR TEXTO BLANCO */
+}
+
+/* Reglas específicas y forzadas para el texto del USUARIO */
+[data-testid="stChatMessage"][data-testid="chat-message-user"] > div[data-testid="stMarkdown"],
+[data-testid="stChatMessage"][data-testid="chat-message-user"] p,
+[data-testid="stChatMessage"][data-testid="chat-message-user"] li,
+[data-testid="stChatMessage"][data-testid="chat-message-user"] strong {
+    color: #FFFFFF !important; /* FORZAR TEXTO BLANCO */
+}
+
+/* Fondos de las burbujas */
 [data-testid="stChatMessage"][data-testid="chat-message-assistant"] > div[data-testid="stMarkdown"] {
     background-color: var(--secondary-bg);
     border: 1px solid var(--border-color);
-    color: var(--text-light) !important; /* Se asegura que el texto sea blanco */
 }
 [data-testid="stChatMessage"][data-testid="chat-message-user"] > div[data-testid="stMarkdown"] {
     background-color: var(--user-message-bg);
     border: 1px solid var(--border-color);
-    color: var(--text-light) !important; /* Se asegura que el texto sea blanco */
 }
+
+/* Input de Texto */
 [data-testid="stChatInput"] { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background-color: var(--primary-bg); border-top: 1px solid var(--border-color); padding-top: 10px; width: 100%; max-width: 768px; }
 [data-testid="stChatInput"] textarea { background-color: #FFFFFF; color: var(--text-dark); border-radius: 18px; border: 1px solid #DDDDDD; }
 [data-testid="stChatInput"] textarea::placeholder { color: #666666; }
@@ -65,7 +97,7 @@ def get_conversation_chain(_api_key):
         Reglas:
         - No des consejos médicos o veterinarios.
         - Usa **negritas** para términos clave.
-        - Al final de cada explicación, sugiere de forma natural una pregunta de seguimiento interesante y relacionada con el tema para fomentar la curiosidad del usuario. Por ejemplo: '¿Te gustaría saber cómo se compara este proceso en plantas y animales?'. # <--- REGLA MODIFICADA
+        - Al final de cada explicación, sugiere de forma natural una pregunta de seguimiento interesante y relacionada con el tema para fomentar la curiosidad del usuario.
         """),
         ("human", "{history}"),
         ("human", "{input}")
