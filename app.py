@@ -5,7 +5,6 @@ from langchain.prompts import ChatPromptTemplate
 from langchain.schema.output_parser import StrOutputParser
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationChain
-import random
 
 # --- CONFIGURACIÓN DE LA PÁGINA Y DEL LOGO ---
 logo_path = "logo.png"
@@ -44,9 +43,6 @@ div[data-testid="stForm"] button:hover { background-color: var(--accent-green); 
 [data-testid="stChatInput"] { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background-color: rgba(43, 43, 43, 0.9); backdrop-filter: blur(10px); border-radius: 24px; padding: 8px 12px; border: 1px solid var(--border-color); width: 90%; max-width: 768px; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
 [data-testid="stChatInput"] textarea { background: none; color: var(--text-light); }
 [data-testid="stChatInput"] textarea::placeholder { color: rgba(255, 255, 255, 0.5); }
-.suggestion-buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px; max-width: 768px; margin: 1rem auto 3rem auto; }
-.suggestion-buttons .stButton button { width: 100%; text-align: left; background-color: var(--secondary-bg); border: 1px solid var(--border-color); color: var(--text-light); padding: 12px 16px; border-radius: 12px; transition: background-color 0.2s ease, border-color 0.2s ease; font-size: 0.95em; font-weight: 500; }
-.suggestion-buttons .stButton button:hover { background-color: #3a3a3a; border-color: var(--accent-green); }
 </style>
 """, unsafe_allow_html=True)
 
@@ -70,7 +66,8 @@ def get_conversation_chain(_api_key):
 if "groq_api_key" not in st.session_state: st.session_state.groq_api_key = None
 if "messages" not in st.session_state: st.session_state.messages = []
 if "chain" not in st.session_state: st.session_state.chain = None
-if "selected_prompt" not in st.session_state: st.session_state.selected_prompt = None
+# Nuevo estado para controlar la visibilidad del input
+if "input_disabled" not in st.session_state: st.session_state.input_disabled = False
 
 # --- PANTALLA DE BIENVENIDA / API KEY ---
 if not st.session_state.groq_api_key:
@@ -102,6 +99,7 @@ else:
         st.markdown('<div style="text-align: left; padding-top: 1rem;">', unsafe_allow_html=True)
         if st.button("➕ Nuevo Chat"):
             st.session_state.messages = []
+            st.session_state.input_disabled = False # Reactiva el input
             if st.session_state.chain: st.session_state.chain.memory.clear()
             st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
@@ -111,54 +109,36 @@ else:
     USER_AVATAR = "👤"
     BOT_AVATAR = logo_path if logo_exists else "✨"
 
-    # <<--- CORRECCIÓN DE FLUJO LÓGICO --->>
-    # 1. Primero, se maneja la lógica de las sugerencias y la entrada del usuario.
-    # Esta variable contendrá el prompt que se debe procesar en esta ejecución.
-    prompt_to_process = None
-
+    # Mensaje de bienvenida si el chat está vacío
     if not st.session_state.messages:
-        st.markdown("<h2 style='text-align: center; color: var(--text-light);'>¿Cómo puedo ayudarte hoy?</h2>", unsafe_allow_html=True)
-        question_bank = [
-            "Explícame la fotosíntesis como si tuviera 10 años", "Qué es la edición genética con CRISPR-Cas9?",
-            "Describe un animal que vive en las fosas abisales", "Diferencias clave entre mitosis y meiosis",
-            "¿Cómo funciona la selección natural de Darwin?", "Háblame sobre el ADN mitocondrial",
-            "¿Qué es un ecosistema y cuáles son sus componentes?", "Describe el ciclo de vida de una mariposa"
-        ]
-        suggestions = random.sample(question_bank, 4)
-        st.markdown("<div class='suggestion-buttons'>", unsafe_allow_html=True)
-        cols = st.columns(2)
-        for i, suggestion in enumerate(suggestions):
-            with cols[i % 2]:
-                if st.button(suggestion, key=f"suggestion_{i}"):
-                    # Al presionar un botón, asignamos su valor para ser procesado.
-                    prompt_to_process = suggestion
-        st.markdown("</div>", unsafe_allow_html=True)
+        st.session_state.messages.append({"role": "assistant", "content": "Hola, soy Bio Gemini. ¿En qué puedo ayudarte hoy?"})
 
-    # 2. Luego, se dibuja el historial de mensajes que ya existe.
+    # Mostrar historial de chat
     for message in st.session_state.messages:
         avatar = BOT_AVATAR if message["role"] == "assistant" else USER_AVATAR
         with st.chat_message(message["role"], avatar=avatar):
             st.markdown(message["content"])
 
-    # 3. Se captura la entrada del chat de texto. Si ya hay un prompt de un botón, este se ignora.
-    if chat_input := st.chat_input("Pregúntame algo de biología..."):
-        prompt_to_process = chat_input
+    # El input del chat solo aparece si no está deshabilitado
+    if not st.session_state.input_disabled:
+        if prompt := st.chat_input("Pregúntame algo de biología..."):
+            st.session_state.messages.append({"role": "user", "content": prompt})
+            with st.chat_message("user", avatar=USER_AVATAR):
+                st.markdown(prompt)
 
-    # 4. Si hay un prompt para procesar (de un botón o del input), se ejecuta el chat.
-    if prompt_to_process:
-        st.session_state.messages.append({"role": "user", "content": prompt_to_process})
-        with st.chat_message("user", avatar=USER_AVATAR):
-            st.markdown(prompt_to_process)
+            with st.chat_message("assistant", avatar=BOT_AVATAR):
+                try:
+                    response_stream = st.session_state.chain.stream({"input": prompt})
+                    response = st.write_stream(response_stream)
+                    st.session_state.messages.append({"role": "assistant", "content": response})
+                    
+                    # Deshabilitar el input después de una respuesta exitosa
+                    st.session_state.input_disabled = True
 
-        with st.chat_message("assistant", avatar=BOT_AVATAR):
-            try:
-                response_stream = st.session_state.chain.stream({"input": prompt_to_process})
-                response = st.write_stream(response_stream)
-                st.session_state.messages.append({"role": "assistant", "content": response})
-            except Exception as e:
-                error_message = "Lo siento, ha ocurrido un error. Verifica tu API Key o tu conexión."
-                st.error(error_message)
-                st.session_state.messages.append({"role": "assistant", "content": error_message})
-        
-        # Se recarga la página para mostrar el nuevo estado completo y limpiar el input.
-        st.rerun()
+                except Exception as e:
+                    error_message = "Lo siento, ha ocurrido un error. Verifica tu API Key o tu conexión."
+                    st.error(error_message)
+                    st.session_state.messages.append({"role": "assistant", "content": error_message})
+            
+            # Recargar la página para que el cambio de estado (input_disabled) tenga efecto
+            st.rerun()
